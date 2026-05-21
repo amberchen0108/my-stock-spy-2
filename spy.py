@@ -38,16 +38,17 @@ def get_all_percentages():
     return "15%", "8%", "77%" # 備用預設
 
 def notify_my_iphone(title, msg):
-    owl_post_url = f"https://api.day.app/{MY_SECRET_KEY}/{title}/{msg}"
-    requests.get(owl_post_url)
-
-if __name__ == "__main__":
-    g, w, r = get_all_percentages()
-    today_date = datetime.now().strftime("%Y-%m-%d")
-    current_hour = datetime.now().strftime("%H:%M")
-    
-    report_title = f"{current_hour} 盤勢回報"
-    report_content = f"日期:{today_date} / 下跌:{g} / 持平:{w} / 上漲:{r}"
-    
-    notify_my_iphone(report_title, report_content)
-    print(f"成功發送：{report_content}")
+    """ 🦉 升級版貓頭鷹：改用更安全的 POST 專車，繞過官方伺服器的阻擋 """
+    url = "https://api.day.app/push"
+    payload = {
+        "device_key": MY_SECRET_KEY,
+        "title": title,
+        "body": msg,
+        "badge": 1,
+        "sound": "minions.caf" # 讓它發出可愛的聲音（可不加）
+    }
+    try:
+        response = requests.post(url, json=payload, timeout=10)
+        print(f"後台回應狀態碼: {response.status_code}")
+    except Exception as e:
+        print(f"發送失敗: {e}")
