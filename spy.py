@@ -38,14 +38,21 @@ def get_all_percentages():
     return "15%", "8%", "77%" # 備用預設
 
 def notify_my_iphone(title, msg):
-    """ 🦉 升級版貓頭鷹：改用更安全的 POST 專車，繞過官方伺服器的阻擋 """
+    """ 🦉 終極完全體貓頭鷹：突破靜音強制響鈴 + 攜帶專屬大頭貼！ """
     url = "https://api.day.app/push"
     payload = {
         "device_key": MY_SECRET_KEY,
         "title": title,
         "body": msg,
         "badge": 1,
-        "sound": "minions.caf" # 讓它發出可愛的聲音（可不加）
+        
+        # 🚨 驚悚級警報密碼
+        "level": "critical",  
+        "volume": 5,          
+        "sound": "alarm.caf",  
+        
+        # 🎨 專屬大頭貼密碼（直接放入你指定的圖片網址）
+        "icon": "https://day.app/assets/images/avatar.jpg"
     }
     try:
         response = requests.post(url, json=payload, timeout=10)
