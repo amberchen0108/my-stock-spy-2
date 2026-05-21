@@ -1,0 +1,33 @@
+name: 每日定時大盤監控
+
+on:
+  schedule:
+    # 台灣 09:00 = 世界 01:00
+    # 台灣 10:00 = 世界 02:00
+    # 台灣 12:00 = 世界 04:00
+    # 台灣 13:30 = 世界 05:30
+    - cron: '0 1 * * *'
+    - cron: '0 2 * * *'
+    - cron: '0 4 * * *'
+    - cron: '30 5 * * *'
+  workflow_dispatch: # 允許我們手動按按鈕測試
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 複製程式碼
+      uses: actions/checkout@v3
+
+    - name: 設定 Python 環境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 安裝裝備套件
+      run: pip install requests
+
+    - name: 啟動小機器人
+      env:
+        BARK_KEY: ${{ secrets.BARK_KEY }}
+      run: python spy.py
